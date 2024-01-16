@@ -96,40 +96,34 @@ describe("Posting a new URL", () => {
 			});
         cy.wait("@postUrl");
     })
-			it("should display a new shortened URL when the form is submitted", () => {
-				cy.get("input[name=title]").type("Sleepy Cat");
-				cy.get("input[name=urlToShorten]").type(
-					"https://verrrrrryyyyyyyllloooooonggggVery_sleepy_cat.jpg"
-				);
-				cy.get("form").submit();
-				cy.wait("@postUrl");
-				cy.get(".url").should("have.length", 3);
-			});
 
-			it("should display the first and last contents of the URL submissions", () => {
-				cy.visit("http://localhost:3000/");
-				cy.wait("@getUrls");
-
-				cy.fixture("urls.json").then((fixtureUrls) => {
-					cy.get(".url").should("have.length", fixtureUrls.urls.length);
-
-          cy.get(".url")
-          .first()
+    it("should display a new shortened URL when the form is submitted", () => {
+      cy.get("input[name=title]").type("Sleepy Cat");
+      cy.get("input[name=urlToShorten]").type(
+        "https://verrrrrryyyyyyyllloooooonggggVery_sleepy_cat.jpg"
+      );
+      cy.get("button").click()
+      cy.wait("@postUrl");
+      cy.get(".url").should("have.length", 3);
+    
+      cy.fixture("urls.json").then((fixtureUrls) => {
+        cy.get(".url")
+        .first()
+        .within(() => {
+            cy.get("h3").contains("Awesome photo");
+            cy.get("a").should('have.attr', 'href', 'http://localhost:3001/useshorturl/1');
+            cy.get("p").contains("https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80");
+        });
+        })    
+        cy.get(".url")
+          .last()
           .within(() => {
-              cy.get("h3").contains("Awesome photo");
-              cy.get("a").should('have.attr', 'href', 'http://localhost:3001/useshorturl/1');
-              cy.get("p").contains("https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80");
+            cy.get("h3").contains("Sleepy Cat");
+            cy.get("a").contains(
+              'http://localhost:3001/useshorturl/3'
+            );
+            cy.get("p").contains("https://verrrrrryyyyyyyllloooooonggggVery_sleepy_cat.jpg");
           });
-          })    
-					cy.get(".url")
-						.last()
-						.within(() => {
-							cy.get("h3").contains("Sleepy Cat");
-							cy.get("a").contains(
-								'http://localhost:3001/useshorturl/3'
-							);
-							cy.get("p").contains("https://verrrrrryyyyyyyllloooooonggggVery_sleepy_cat.jpg");
-						});
-			});
+    });
 	});
 });
