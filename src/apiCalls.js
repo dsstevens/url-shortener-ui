@@ -1,7 +1,7 @@
 export const getUrls = () => {
   return fetch('http://localhost:3001/api/v1/urls')
-      .then(response => response.json())
-      .catch(err => console.error(err))
+    .then(response => response.json())
+    .catch(err => console.error(err))
 }
 
 export const postUrl = (url, title) => {
@@ -18,6 +18,5 @@ export const postUrl = (url, title) => {
     body: JSON.stringify(body)
   })
     .then(response => response.json())
-    .then(data => console.log(data))
     .catch(err => console.error(err))
 }
