@@ -7,7 +7,12 @@ function UrlForm({ setUrls }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    clearInputs();
+    postUrl(urlToShorten, title).then(data => {
+      setUrls(prev => {
+        return [...prev, data]
+      })
+      clearInputs();
+    })
   }
 
   const clearInputs = () => {
